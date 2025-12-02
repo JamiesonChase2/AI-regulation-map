@@ -532,7 +532,7 @@
 
     async function loadFederalData() {
       try {
-        const res = await fetch("federal-ai-legislation.json");
+        const res = await fetch("federal-ai-events.json");
         if (!res.ok) throw new Error("Failed to load federal JSON");
         
         const data = await res.json();
