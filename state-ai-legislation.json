@@ -1,0 +1,182 @@
+{
+  "CA": {
+    "name": "California",
+    "events": [
+      {
+        "date": "2019-10-03",
+        "title": "Deepfake Election Law",
+        "status": "Enacted",
+        "summary": "Restricts distribution of deceptive deepfake videos close to elections.",
+        "links": [
+          {
+            "label": "Bill Text",
+            "url": "https://leginfo.legislature.ca.gov/"
+          }
+        ]
+      },
+      {
+        "date": "2022-09-14",
+        "title": "Automated Decision Tools Accountability Act (Proposed)",
+        "status": "Proposed",
+        "summary": "Would regulate high-risk automated decision systems for employment, housing, and credit.",
+        "links": []
+      }
+    ]
+  },
+
+  "OR": {
+    "name": "Oregon",
+    "events": [
+      {
+        "date": "2021-02-10",
+        "title": "Government Use of Automated Tools (Bill Proposal)",
+        "status": "Proposed",
+        "summary": "Bill to study and regulate government use of automated decision systems.",
+        "links": [
+          {
+            "label": "Oregon Legislature",
+            "url": "https://olis.oregonlegislature.gov/"
+          }
+        ]
+      }
+    ]
+  },
+
+  "WA": {
+    "name": "Washington",
+    "events": [
+      {
+        "date": "2020-03-31",
+        "title": "Facial Recognition Law",
+        "status": "Enacted",
+        "summary": "First state law regulating government use of facial recognition technology.",
+        "links": [
+          {
+            "label": "Summary",
+            "url": "https://app.leg.wa.gov/"
+          }
+        ]
+      },
+      {
+        "date": "2023-01-15",
+        "title": "AI Task Force Proposal",
+        "status": "Proposed",
+        "summary": "Proposal to create a task force to study ethical AI and automated decision systems.",
+        "links": []
+      }
+    ]
+  },
+
+  "TX": {
+    "name": "Texas",
+    "events": [
+      {
+        "date": "2019-06-14",
+        "title": "Deepfake Revenge Porn Criminalization",
+        "status": "Enacted",
+        "summary": "Made malicious deepfake pornography illegal.",
+        "links": []
+      },
+      {
+        "date": "2023-05-01",
+        "title": "AI Task Force Bill",
+        "status": "Proposed",
+        "summary": "Would establish a statewide task force to study AI's impact on government.",
+        "links": []
+      }
+    ]
+  },
+
+  "NY": {
+    "name": "New York",
+    "events": [
+      {
+        "date": "2021-07-01",
+        "title": "Employee Monitoring Disclosure Law",
+        "status": "Enacted",
+        "summary": "Requires employers to disclose electronic monitoring tools, including automated systems.",
+        "links": []
+      },
+      {
+        "date": "2023-02-20",
+        "title": "Automated Employment Decision Tool Restrictions",
+        "status": "Proposed",
+        "summary": "Proposal to regulate AI hiring tools and require bias auditing.",
+        "links": []
+      }
+    ]
+  },
+
+  "FL": {
+    "name": "Florida",
+    "events": [
+      {
+        "date": "2023-03-15",
+        "title": "AI in Education Guidelines",
+        "status": "Proposed",
+        "summary": "Proposal to study use of AI tools in public schools and establish usage guidelines.",
+        "links": []
+      }
+    ]
+  },
+
+  "IL": {
+    "name": "Illinois",
+    "events": [
+      {
+        "date": "2020-01-01",
+        "title": "AI Video Interview Act",
+        "status": "Enacted",
+        "summary": "Restricts AI analysis of job-interview videos, requiring consent and transparency.",
+        "links": []
+      },
+      {
+        "date": "2022-05-25",
+        "title": "Biometric Information Privacy Act Enforcement Expansion",
+        "status": "Proposed",
+        "summary": "Proposed expansion of AI/biometric privacy enforcement.",
+        "links": []
+      }
+    ]
+  },
+
+  "CO": {
+    "name": "Colorado",
+    "events": [
+      {
+        "date": "2021-07-07",
+        "title": "Privacy Act (CPA)",
+        "status": "Enacted",
+        "summary": "Includes provisions about automated profiling and data processing transparency.",
+        "links": []
+      },
+      {
+        "date": "2023-06-06",
+        "title": "AI-Specific Amendments",
+        "status": "Proposed",
+        "summary": "Proposed amendments for explicit AI/ADS requirements.",
+        "links": []
+      }
+    ]
+  },
+
+  "MA": {
+    "name": "Massachusetts",
+    "events": [
+      {
+        "date": "2020-12-31",
+        "title": "Facial Recognition Moratorium (Local, Cities)",
+        "status": "Enacted",
+        "summary": "Several municipalities passed restrictions on government facial recognition use.",
+        "links": []
+      },
+      {
+        "date": "2022-03-10",
+        "title": "Statewide AI Oversight Bill",
+        "status": "Proposed",
+        "summary": "Proposal for an AI oversight committee and ADS transparency requirements.",
+        "links": []
+      }
+    ]
+  }
+}
