@@ -9,8 +9,9 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
 
-  <!-- jQuery + ScrollReveal -->
+  <!-- jQuery (for ScrollReveal demo JS, optional) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- ScrollReveal for the vertical timeline animation -->
   <script src="https://unpkg.com/scrollreveal"></script>
 
   <style>
@@ -25,22 +26,31 @@
       --chip-bg: rgba(79, 70, 229, 0.16);
       --chip-border: rgba(129, 140, 248, 0.5);
       --badge-bg: rgba(248, 250, 252, 0.05);
+      --danger: #f97373;
+      --success: #4ade80;
+      --warning: #facc15;
     }
 
-    html,
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #020617; /* matches underside of dark gradient */
-    }
-
-    body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
       background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
       color: var(--text-primary);
       -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
     }
 
     .page {
@@ -51,9 +61,6 @@
       gap: 1.5rem;
     }
 
-    /* --- HEADERS, MAP, PANELS, TIMELINE, ETC --- */
-    /* (Everything below remains unchanged from your version except federal JSON integration) */
-
     .page-header {
       max-width: 1100px;
       margin: 0 auto;
@@ -62,26 +69,29 @@
 
     .page-title {
       font-size: 1.8rem;
+      letter-spacing: -0.03em;
       margin: 0 0 0.25rem;
       display: flex;
-      gap: .5rem;
       align-items: center;
+      gap: 0.5rem;
     }
 
-    .badge {
-      font-size: .65rem;
-      padding: .2rem .45rem;
+    .page-title span.badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 0.15rem 0.4rem;
       border-radius: 999px;
       background: var(--badge-bg);
       border: 1px solid var(--border-subtle);
-      text-transform: uppercase;
-      letter-spacing: .12em;
+      color: var(--text-muted);
     }
 
     .page-subtitle {
-      color: var(--text-muted);
-      font-size: .9rem;
       margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 650px;
     }
 
     .layout {
@@ -89,23 +99,73 @@
       max-width: 1100px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1.6fr 1.4fr;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
       gap: 1.25rem;
     }
 
-    @media(max-width:900px){
+    @media (max-width: 900px) {
       .layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
     .card {
-      background: #181a32;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
       border-radius: 1rem;
-      padding: 1rem;
       border: 1px solid var(--border-subtle);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.7);
+      padding: 1rem 1rem 1.1rem;
+      position: relative;
+      overflow: hidden;
     }
 
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .card-subtitle {
+      margin: 0.15rem 0 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .chip {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      color: var(--accent-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .chip-dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+    }
+
+    /* Map SVG */
     #us-map {
       width: 100%;
       height: auto;
@@ -115,267 +175,599 @@
     #us-map path {
       fill: #1f2937;
       stroke: #111827;
-      transition: .2s ease;
+      transition: fill 0.2s ease, stroke-width 0.2s ease, transform 0.15s ease;
     }
 
-    #us-map path[data-has-ai="true"] { fill: #4f46e5; }
-    #us-map path[data-selected="true"] {
-      fill: #a5b4fc;
-      stroke: #e5e7eb;
-      stroke-width: 2;
+    #us-map path[data-has-ai="true"] {
+      fill: #4f46e5;
     }
 
     #us-map path:hover {
+      stroke-width: 1.5;
+      stroke: #e5e7eb;
       cursor: pointer;
       transform: translateY(-1px);
-      stroke-width: 1.5;
-      stroke: #d1d5db;
+    }
+
+    #us-map path[data-selected="true"] {
+      fill: #a5b4fc;
+      stroke-width: 2;
+      stroke: #e5e7eb;
+    }
+
+    .state-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: 480px;
+      overflow: hidden;
     }
 
     .state-panel-scroll {
+      flex: 1;
+      border-radius: 0.75rem;
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), rgba(15, 23, 42, 0.9) 55%);
+      border: 1px solid var(--border-subtle);
+      padding: 0.8rem 0.9rem;
       overflow-y: auto;
-      max-height: 480px;
-      padding-right: .5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+    }
+
+    .state-panel-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .state-panel-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .state-panel-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.7);
+      border-radius: 999px;
+    }
+
+    .state-title {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .state-subtitle {
+      margin: 0.3rem 0 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .state-timeline {
-      border-left: 1px solid rgba(148,163,184,0.5);
-      padding-left: .7rem;
-      margin-left: .3rem;
+      border-left: 1px solid rgba(148, 163, 184, 0.5);
+      margin-left: 0.35rem;
+      padding-left: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
-    .state-event { margin-bottom: 1rem; position: relative; }
-    .state-event:before {
+    .state-event {
+      position: relative;
+      padding: 0.25rem 0 0.2rem;
+    }
+
+    .state-event::before {
       content: "";
       position: absolute;
-      left: -1rem;
-      top: 6px;
-      width: .45rem;
-      height: .45rem;
-      border-radius: 50%;
+      left: -0.9rem;
+      top: 0.4rem;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 999px;
       background: var(--accent-soft);
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.28);
     }
 
-    /* --- Federal timeline (unchanged styling) --- */
+    .state-event-date {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 0.1rem;
+    }
 
-    .timeline { position: relative; }
+    .state-event-title {
+      font-size: 0.85rem;
+      margin: 0 0 0.1rem;
+    }
+
+    .state-event-status {
+      font-size: 0.7rem;
+      color: var(--accent-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    .state-event-status span {
+      padding: 0.05rem 0.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .state-event-summary {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0 0 0.2rem;
+    }
+
+    .state-event-links {
+      font-size: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.1rem;
+    }
+
+    .state-event-links a {
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.92);
+    }
+
+    .placeholder {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Federal timeline (CodePen-style vertical) */
+    .federal-section {
+      max-width: 1100px;
+      margin: 0.25rem auto 0;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 1.3rem auto 0.5rem;
+      padding: 0 0 0 0;
+    }
     .timeline:before {
-      content:"";
-      position:absolute;
-      left:50%;
-      top:0;
-      width:3px;
-      height:100%;
-      background:rgba(148,163,184,0.4);
-      transform:translateX(-50%);
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 100%;
+      background: rgba(148, 163, 184, 0.4);
     }
 
-    .timeline-item { display:flex; justify-content:flex-end; padding:1rem 0; }
-    .timeline-item:nth-child(odd){ justify-content:flex-start; }
+    .timeline-item {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding: 0.6rem 0;
+    }
+    .timeline-item:nth-child(odd) {
+      justify-content: flex-start;
+    }
 
     .timeline-content {
-      background:#181a32;
-      border:1px solid var(--border-subtle);
-      border-radius:.75rem;
-      padding:.9rem 1rem;
-      width:46%;
-      position:relative;
+      position: relative;
+      width: 46%;
+      padding: 0.7rem 0.9rem;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 0.75rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.5);
     }
 
     .timeline-content:before {
-      content:"";
-      position:absolute;
-      top:1rem;
-      width:.55rem;
-      height:.55rem;
-      border-radius:50%;
-      background:var(--accent-soft);
-      box-shadow:0 0 0 4px rgba(129,140,248,0.35);
+      content: "";
+      position: absolute;
+      top: 0.7rem;
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.35);
+      z-index: 3;
     }
 
-    .timeline-item:nth-child(even) .timeline-content:before { right:-.3rem; }
-    .timeline-item:nth-child(odd) .timeline-content:before { left:-.3rem; }
+    .timeline-item:nth-child(even) .timeline-content:before {
+      right: -0.28rem;
+    }
+    .timeline-item:nth-child(odd) .timeline-content:before {
+      left: -0.28rem;
+    }
+
+    .timeline-date {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-title {
+      margin: 0 0 0.2rem;
+      font-size: 0.85rem;
+    }
+
+    .timeline-status {
+      font-size: 0.7rem;
+      color: var(--accent-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-summary {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .timeline:before {
+        left: 0.5rem;
+      }
+      .timeline-item,
+      .timeline-item:nth-child(odd) {
+        justify-content: flex-start;
+      }
+      .timeline-content {
+        width: calc(100% - 2rem);
+        margin-left: 1.3rem;
+      }
+      .timeline-content:before {
+        left: -0.28rem !important;
+      }
+    }
   </style>
 </head>
-
 <body>
-<div class="page">
+  <div class="page">
+    <header class="page-header">
+      <h1 class="page-title">
+        AI Regulation Map
+        <span class="badge">Prototype</span>
+      </h1>
+      <p class="page-subtitle">
+        Click a state to view its AI-related bills and policy activity. Data is loaded
+        from a JSON file (<code>state-ai-legislation.json</code>) so it can be easily
+        updated without changing the HTML.
+      </p>
+    </header>
 
-  <header class="page-header">
-    <h1 class="page-title">AI Regulation Map <span class="badge">Prototype</span></h1>
-    <p class="page-subtitle">Click a state to view its AI-related bills and policy activity. Data loads from JSON files for easy updates.</p>
-  </header>
-
-  <main class="layout">
-
-    <!-- MAP PANEL -->
-    <section class="card">
-      <h2>US States</h2>
-      <p class="text-muted">Highlighted states have at least one AI-related entry.</p>
-      <svg id="us-map"></svg>
-    </section>
-
-    <!-- STATE DETAILS -->
-    <section class="card">
-      <h2>State Timeline</h2>
-
-      <div id="details-placeholder" class="state-panel-scroll">
-        <p class="placeholder">Click a highlighted state to load its AI timeline.</p>
-      </div>
-
-      <div id="details-content" class="state-panel-scroll" style="display:none;"></div>
-    </section>
-
-  </main>
-
-  <!-- FEDERAL TIMELINE -->
-  <section class="card" style="max-width:1100px; margin:0 auto;">
-    <h2>Federal AI Regulation Timeline</h2>
-    <div id="federal-timeline-root"></div>
-  </section>
-
-</div>
-
-<script>
-/* ============================================================
-   LOAD STATE DATA FROM JSON
-============================================================ */
-let STATE_DATA = {};
-
-async function loadStateData() {
-  const res = await fetch("state-ai-legislation.json");
-  const data = await res.json();
-  Object.values(data).forEach(s => {
-    if (s.events) s.events.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  });
-  STATE_DATA = data;
-}
-
-/* ============================================================
-   LOAD FEDERAL DATA FROM JSON
-============================================================ */
-let FEDERAL_AI_EVENTS = [];
-
-async function loadFederalData() {
-  const res = await fetch("federal-ai-events.json");
-  const data = await res.json();
-  data.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  FEDERAL_AI_EVENTS = data;
-}
-
-/* ============================================================
-   MAP RENDERING
-============================================================ */
-
-const FIPS_TO_ABBR = {
-  "01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT",
-  "10":"DE","11":"DC","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL",
-  "18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD",
-  "25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE",
-  "32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND",
-  "39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD",
-  "47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV",
-  "55":"WI","56":"WY"
-};
-
-const svg = d3.select("#us-map")
-  .attr("viewBox","0 0 960 600")
-  .attr("preserveAspectRatio","xMidYMid meet");
-
-const projection = d3.geoAlbersUsa().scale(1280).translate([480, 300]);
-const path = d3.geoPath(projection);
-
-async function drawMap() {
-  await loadStateData();
-  const us = await d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json");
-  const states = topojson.feature(us, us.objects.states).features;
-
-  const paths = svg.selectAll("path")
-    .data(states)
-    .join("path")
-    .attr("d", path)
-    .attr("data-abbr", d => FIPS_TO_ABBR[d.id])
-    .attr("data-has-ai", d => STATE_DATA[FIPS_TO_ABBR[d.id]] ? "true" : null);
-
-  paths
-    .attr("fill", d => STATE_DATA[FIPS_TO_ABBR[d.id]] ? "#4f46e5" : "#1f2937")
-    .attr("stroke", "#111827")
-    .attr("stroke-width", .8)
-    .on("click", function(e, d){
-      const abbr = FIPS_TO_ABBR[d.id];
-      svg.selectAll("path").attr("data-selected", null);
-      d3.select(this).attr("data-selected","true");
-      renderStateDetails(abbr);
-    });
-}
-
-/* ============================================================
-   STATE PANEL
-============================================================ */
-function renderStateDetails(abbr){
-  const placeholder = document.getElementById("details-placeholder");
-  const panel = document.getElementById("details-content");
-
-  placeholder.style.display = "none";
-  panel.style.display = "block";
-
-  const data = STATE_DATA[abbr];
-  if (!data) {
-    panel.innerHTML = `<p>No AI data for ${abbr}.</p>`;
-    return;
-  }
-
-  const html = data.events.map(ev => `
-    <div class="state-event">
-      <div class="state-event-date">${new Date(ev.date).toLocaleDateString()}</div>
-      <h4>${ev.title}</h4>
-      <div><span>${ev.status}</span></div>
-      <p>${ev.summary}</p>
-      ${(ev.links||[]).map(l=>`<a href="${l.url}" target="_blank">${l.label}</a>`).join("")}
-    </div>
-  `).join("");
-
-  panel.innerHTML = `
-    <h3>${data.name} (${abbr})</h3>
-    <div class="state-timeline">${html}</div>
-  `;
-}
-
-/* ============================================================
-   FEDERAL TIMELINE RENDERING
-============================================================ */
-function renderFederalTimeline(){
-  const root = document.getElementById("federal-timeline-root");
-  if (!FEDERAL_AI_EVENTS.length){
-    root.innerHTML = "<p>No federal events found.</p>";
-    return;
-  }
-
-  root.innerHTML = `
-    <div class="timeline">
-      ${FEDERAL_AI_EVENTS.map(ev => `
-      <div class="timeline-item js--fadeInRight">
-        <div class="timeline-content">
-          <span class="timeline-date">${new Date(ev.date).toLocaleDateString()}</span>
-          <h3>${ev.title}</h3>
-          <div class="timeline-status">${ev.status}</div>
-          <p class="timeline-summary">${ev.summary}</p>
+    <main class="layout">
+      <!-- Left: US map -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">US States</h2>
+            <p class="card-subtitle">
+              Highlighted states have at least one AI-related timeline entry in the JSON.
+            </p>
+          </div>
+          <div class="chip-row">
+            <div class="chip">
+              <span class="chip-dot"></span>
+              Has AI legislation data
+            </div>
+          </div>
         </div>
-      </div>`).join("")}
-    </div>
-  `;
-}
+        <svg id="us-map"></svg>
+      </section>
 
-/* ============================================================
-   PAGE LOAD
-============================================================ */
+      <!-- Right: state details panel -->
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">State timeline</h2>
+            <p class="card-subtitle">
+              Click a state in the map to see its legislative timeline and links.
+            </p>
+          </div>
+        </div>
 
-Promise.all([
-  drawMap(),
-  loadFederalData()
-]).then(renderFederalTimeline);
+        <div class="state-panel">
+          <div id="details-placeholder" class="state-panel-scroll">
+            <p class="placeholder">
+              No state selected yet. Click on a highlighted state in the map to load its
+              AI policy timeline. States without entries in the JSON will show a simple
+              “no data” message.
+            </p>
+          </div>
 
-</script>
+          <div id="details-content" class="state-panel-scroll" style="display:none;"></div>
+        </div>
+      </section>
+    </main>
 
+    <!-- Federal timeline / CodePen-style section -->
+    <section class="federal-section">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Federal AI regulation timeline</h2>
+            <p class="card-subtitle">
+              High-level federal actions, guidance, and proposals related to AI and
+              automated decision systems.
+            </p>
+          </div>
+        </div>
+
+        <div id="federal-timeline-root"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ====================================
+    // 1. State AI legislation data (loaded from JSON)
+    // ====================================
+    let STATE_DATA = {};
+
+    async function loadStateData() {
+      try {
+        // JSON should live next to this file as "state-ai-legislation.json"
+        const res = await fetch("state-ai-legislation.json");
+        if (!res.ok) {
+          throw new Error("Failed to load state AI legislation JSON");
+        }
+        const data = await res.json();
+
+        // Sort state events oldest -> newest
+        Object.values(data).forEach(state => {
+          if (state.events) {
+            state.events.sort((a, b) => new Date(a.date) - new Date(b.date));
+          }
+        });
+
+        STATE_DATA = data;
+      } catch (err) {
+        console.error(err);
+        STATE_DATA = {};
+      }
+    }
+
+    // ====================================
+    // 2. Federal AI regulation timeline data
+    // ====================================
+    let FEDERAL_AI_EVENTS = [];
+
+    async function loadFederalData() {
+      try {
+        const res = await fetch("federal-ai-legislation.json");
+        if (!res.ok) throw new Error("Failed to load federal JSON");
+        
+        const data = await res.json();
+        
+        // Sort oldest -> newest
+        data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        FEDERAL_AI_EVENTS = data;
+
+        // Re-render the timeline now that we have data
+        // (This function is defined later in Section 6, which is fine)
+        if (typeof renderFederalTimeline === "function") {
+          renderFederalTimeline();
+        }
+      } catch (err) {
+        console.error("Error loading federal data:", err);
+      }
+    }
+
+    // Trigger the load immediately
+    loadFederalData();
+
+    // ====================================
+    // 3. FIPS -> state abbreviation mapping
+    // ====================================
+    const FIPS_TO_ABBR = {
+      "01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT",
+      "10":"DE","11":"DC","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL",
+      "18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD",
+      "25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE",
+      "32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND",
+      "39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD",
+      "47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV",
+      "55":"WI","56":"WY"
+    };
+
+    // ====================================
+    // 4. Draw US map with D3
+    // ====================================
+    const width = 960;
+    const height = 600;
+
+    const svg = d3.select("#us-map")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const projection = d3.geoAlbersUsa()
+      .scale(1280)
+      .translate([width / 2, height / 2]);
+
+    const path = d3.geoPath(projection);
+    const US_TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+
+    // Load BOTH the state JSON + topojson before drawing
+    Promise.all([
+      loadStateData(),
+      d3.json(US_TOPO_URL)
+    ]).then(([, us]) => {
+      const states = topojson.feature(us, us.objects.states).features;
+
+      const statePaths = svg.selectAll("path")
+        .data(states)
+        .join("path")
+        .attr("d", path)
+        .attr("data-abbr", d => FIPS_TO_ABBR[d.id] || null)
+        .attr("data-has-ai", d => {
+          const abbr = FIPS_TO_ABBR[d.id];
+          return STATE_DATA[abbr] ? "true" : null;
+        });
+
+      statePaths
+        .attr("fill", d => {
+          const abbr = FIPS_TO_ABBR[d.id];
+          return STATE_DATA[abbr] ? "#4f46e5" : "#1f2937";
+        })
+        .attr("stroke", "#020617")
+        .attr("stroke-width", 0.6)
+        .style("cursor", "pointer");
+
+      // Click handler
+      statePaths.on("click", function(event, d) {
+        const abbr = FIPS_TO_ABBR[d.id];
+        if (!abbr) return;
+
+        statePaths.attr("data-selected", null);
+        d3.select(this).attr("data-selected", "true");
+        renderStateDetails(abbr);
+      });
+    }).catch(err => {
+      console.error("Error loading US map or state data:", err);
+    });
+
+    // ====================================
+    // 5. State details panel
+    // ====================================
+    function renderStateDetails(stateAbbr) {
+      const placeholder = document.getElementById("details-placeholder");
+      const container = document.getElementById("details-content");
+      const stateInfo = STATE_DATA[stateAbbr];
+
+      placeholder.style.display = "none";
+      container.style.display = "block";
+
+      if (!stateInfo) {
+        container.innerHTML = `
+          <h3 class="state-title">${stateAbbr}</h3>
+          <p class="state-subtitle">
+            No AI-specific legislation data has been added for this state yet
+            in <code>state-ai-legislation.json</code>.
+          </p>
+        `;
+        return;
+      }
+
+      const events = stateInfo.events || [];
+
+      const eventsHtml = events.map(ev => {
+        const linksHtml = (ev.links || [])
+          .map(link => `<a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.label}</a>`)
+          .join("");
+
+        const dateLabel = ev.date ? new Date(ev.date).toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }) : "Unknown date";
+
+        return `
+          <article class="state-event">
+            <div class="state-event-date">${dateLabel}</div>
+            <h4 class="state-event-title">${ev.title || "Untitled event"}</h4>
+            <div class="state-event-status">
+              <span>${ev.status || "Status not specified"}</span>
+            </div>
+            <p class="state-event-summary">
+              ${ev.summary || "No summary provided."}
+            </p>
+            ${
+              linksHtml
+                ? `<div class="state-event-links">${linksHtml}</div>`
+                : ""
+            }
+          </article>
+        `;
+      }).join("");
+
+      container.innerHTML = `
+        <h3 class="state-title">${stateInfo.name} (${stateAbbr})</h3>
+        <p class="state-subtitle">
+          Timeline of notable AI-related bills and actions
+          (top: earliest, bottom: most recent).
+        </p>
+        ${
+          eventsHtml
+            ? `<div class="state-timeline">${eventsHtml}</div>`
+            : `<p class="placeholder">No events recorded yet for this state.</p>`
+        }
+      `;
+    }
+
+    // ====================================
+    // 6. Federal timeline rendering
+    // ====================================
+    function formatFederalDateLabel(d) {
+      if (!d) return "Unknown date";
+      const dt = new Date(d);
+      const day = dt.getDate().toString().padStart(2, "0");
+      const month = dt.toLocaleString(undefined, { month: "short" });
+      const year = dt.getFullYear();
+      return `${day} ${month} ${year}`;
+    }
+
+    function renderFederalTimeline() {
+      const root = document.getElementById("federal-timeline-root");
+      if (!FEDERAL_AI_EVENTS.length) {
+        root.innerHTML = "<p class='placeholder'>No federal events recorded.</p>";
+        return;
+      }
+
+      const itemsHtml = FEDERAL_AI_EVENTS.map(ev => {
+        const dateLabel = formatFederalDateLabel(ev.date);
+        return `
+          <div class="timeline-item js--fadeInRight">
+            <div class="timeline-content">
+              <span class="timeline-date">${dateLabel}</span>
+              <h3 class="timeline-title">${ev.title}</h3>
+              <div class="timeline-status">${ev.status}</div>
+              <p class="timeline-summary">${ev.summary}</p>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      root.innerHTML = `<div class="timeline">${itemsHtml}</div>`;
+    }
+
+    renderFederalTimeline();
+
+    // ====================================
+    // 7. ScrollReveal animation (CodePen-style)
+    // ====================================
+    $(function () {
+      if (typeof ScrollReveal === "undefined") return;
+
+      const sr = ScrollReveal();
+
+      if ($(window).width() < 768) {
+        if ($(".timeline-content").hasClass("js--fadeInLeft")) {
+          $(".timeline-content")
+            .removeClass("js--fadeInLeft")
+            .addClass("js--fadeInRight");
+        }
+
+        sr.reveal(".js--fadeInRight", {
+          origin: "right",
+          distance: "300px",
+          easing: "ease-in-out",
+          duration: 800
+        });
+      } else {
+        sr.reveal(".js--fadeInLeft", {
+          origin: "left",
+          distance: "300px",
+          easing: "ease-in-out",
+          duration: 800
+        });
+
+        sr.reveal(".js--fadeInRight", {
+          origin: "right",
+          distance: "300px",
+          easing: "ease-in-out",
+          duration: 800
+        });
+      }
+    });
+  </script>
 </body>
 </html>
