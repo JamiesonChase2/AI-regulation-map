@@ -178,5 +178,17 @@
         "links": []
       }
     ]
+  },
+    "ID": {
+    "name": "Idaho",
+    "events": [
+      {
+        "date": "2025-09-12",
+        "title": "AI in Education Guidelines",
+        "status": "Enacted",
+        "summary": "Proposal to study use of AI tools in public schools and establish usage guidelines.",
+        "links": []
+      }
+    ]
   }
 }
