@@ -1,0 +1,37 @@
+[
+  {
+    "date": "2019-02-11",
+    "title": "High-level federal AI strategy announced",
+    "status": "Policy guidance",
+    "summary": "Early, high-level strategy articulating priorities for AI research, development, and international competitiveness.",
+    "links": []
+  },
+  {
+    "date": "2021-01-01",
+    "title": "Foundational trustworthy AI principles",
+    "status": "Guidance",
+    "summary": "Federal guidance emphasizing civil rights, non-discrimination, and transparency in public-sector AI use.",
+    "links": []
+  },
+  {
+    "date": "2023-01-26",
+    "title": "AI risk management framework",
+    "status": "Framework",
+    "summary": "Risk-oriented framework for organizations deploying AI systems, focusing on governance and responsible practices.",
+    "links": []
+  },
+  {
+    "date": "2023-10-30",
+    "title": "Executive-level direction on safe & secure AI",
+    "status": "Executive action",
+    "summary": "Wide-ranging executive action addressing security, labor impacts, and civil rights in AI.",
+    "links": []
+  },
+  {
+    "date": "2024-06-01",
+    "title": "Ongoing hearings & draft bills",
+    "status": "In progress",
+    "summary": "Ongoing hearings and draft legislation exploring national AI transparency, data protection, and sector-specific regulation.",
+    "links": []
+  }
+]
