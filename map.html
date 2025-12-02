@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>US AI Legislation Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* ===== Global layout / base ===== */
+
+    html, body {
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      background-color: #E5E5E7;
+      color: #212121;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 200%;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 400;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .map-panel {
+      flex: 2 1 400px;
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .details-panel {
+      flex: 1 1 260px;
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .federal-panel-wrapper {
+      max-width: 1200px;
+      margin: 0 auto 1.5rem auto;
+      padding: 0 1rem 1.5rem;
+    }
+
+    .federal-panel {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem 1rem 2rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    #us-map {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+
+    /* States default style on map */
+
+    #us-map path[data-abbr] {
+      fill: #e0e0e0;
+      stroke: #ffffff;
+      stroke-width: 0.5;
+      cursor: pointer;
+      transition: fill 0.15s ease-out;
+    }
+
+    #us-map path[data-abbr]:hover {
+      fill: #879bff;
+    }
+
+    #us-map path[data-has-ai="true"] {
+      fill: #b0c4ff;
+    }
+
+    #us-map path[data-selected="true"] {
+      fill: #3F51B5;
+    }
+
+    .state-title {
+      margin-bottom: 0.1rem;
+    }
+
+    .state-subtitle {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 0.75rem;
+    }
+
+    .disclaimer {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    /* ===== State vertical timeline (right panel) ===== */
+
+    .state-timeline {
+      position: relative;
+      margin: 0.5rem 0 0 0.5rem;
+      padding-left: 1.2rem;
+      border-left: 2px solid #C5CAE9;
+    }
+
+    .state-timeline-item {
+      position: relative;
+      margin-bottom: 1rem;
+      padding-left: 0.75rem;
+    }
+
+    .state-timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .state-timeline-marker {
+      position: absolute;
+      left: -1.15rem;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3F51B5;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.25);
+    }
+
+    .state-timeline-date {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 0.1rem;
+    }
+
+    .state-timeline-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0.1rem 0;
+    }
+
+    .state-timeline-status {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: #3949ab;
+      background: #e8eaf6;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      margin-left: 0.25rem;
+    }
+
+    .state-timeline-summary {
+      font-size: 0.9rem;
+      margin: 0.25rem 0;
+    }
+
+    .state-timeline-links {
+      padding-left: 1rem;
+      margin: 0.2rem 0 0.3rem;
+      font-size: 0.85rem;
+    }
+
+    .state-timeline-links a {
+      color: #3949ab;
+      text-decoration: none;
+    }
+
+    .state-timeline-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* =====================================================
+       Federal timeline (CodePen-style from provided CSS)
+       Scoped to .federal-panel .timeline so it doesn't
+       interfere with your state timeline.
+       ===================================================== */
+
+    .federal-panel section.timeline {
+      padding: 100px 0 0;
+    }
+
+    .federal-panel .timeline {
+      position: relative;
+    }
+
+    .federal-panel .timeline::before {
+      content: '';
+      background: #C5CAE9; /* $light-primary */
+      width: 5px;
+      height: 95%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .federal-panel .timeline-item {
+      width: 100%;
+      margin-bottom: 70px;
+    }
+
+    .federal-panel .timeline-item::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .federal-panel .timeline-img {
+      width: 30px;
+      height: 30px;
+      background: #3F51B5; /* $primary */
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      margin-top: 25px;
+      margin-left: -15px;
+    }
+
+    .federal-panel .timeline-content {
+      position: relative;
+      width: 45%;
+      padding: 10px 30px;
+      border-radius: 4px;
+      background: #f5f5f5;
+      box-shadow: 0 20px 25px -15px rgba(0, 0, 0, .3);
+      float: left;
+    }
+
+    .federal-panel .timeline-content::after {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      width: 0;
+      height: 0;
+      top: 30px;
+      right: -15px;
+      border-width: 10px 0 10px 15px;
+      border-color: transparent transparent transparent #f5f5f5;
+    }
+
+    .federal-panel .timeline-item:nth-child(even) .timeline-content {
+      float: right;
+      padding: 40px 30px 10px 30px;
+    }
+
+    .federal-panel .timeline-item:nth-child(even) .timeline-content .date {
+      right: auto;
+      left: 0;
+    }
+
+    .federal-panel .timeline-item:nth-child(even) .timeline-content::after {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      width: 0;
+      height: 0;
+      top: 30px;
+      left: -15px;
+      border-width: 10px 15px 10px 0;
+      border-color: transparent #f5f5f5 transparent transparent;
+    }
+
+    .federal-panel a {
+      background: #3F51B5;
+      color: #FFFFFF;
+      padding: 8px 20px;
+      text-transform: uppercase;
+      font-size: 14px;
+      margin-bottom: 20px;
+      margin-top: 10px;
+      display: inline-block;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px -1px rgba(0, 0, 0, .6);
+      text-decoration: none;
+    }
+
+    .federal-panel a:hover,
+    .federal-panel a:active,
+    .federal-panel a:focus {
+      background: #303F9F; /* darken primary */
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    .federal-panel .timeline-card {
+      padding: 0 !important;
+    }
+
+    .federal-panel .timeline-card p {
+      padding: 0 20px;
+    }
+
+    .federal-panel .timeline-card a {
+      margin-left: 20px;
+    }
+
+    .federal-panel .timeline-img-header {
+      height: 200px;
+      position: relative;
+      margin-bottom: 20px;
+      background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0, .4)), url('https://picsum.photos/1000/800/?random') center center no-repeat;
+      background-size: cover;
+    }
+
+    .federal-panel .timeline-img-header h2 {
+      color: #FFFFFF;
+      position: absolute;
+      bottom: 5px;
+      left: 20px;
+      margin: 0;
+    }
+
+    .federal-panel blockquote {
+      margin-top: 30px;
+      color: #757575;
+      border-left-color: #3F51B5;
+      padding: 0 20px;
+      border-left: 4px solid #3F51B5;
+    }
+
+    .federal-panel .date {
+      background: #FF4081;
+      display: inline-block;
+      color: #FFFFFF;
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    /* Responsive adjustments for federal timeline */
+
+    @media screen and (max-width: 768px) {
+      .federal-panel .timeline::before {
+        left: 50px;
+      }
+
+      .federal-panel .timeline-img {
+        left: 50px;
+      }
+
+      .federal-panel .timeline-content,
+      .federal-panel .timeline-item:nth-child(even) .timeline-content {
+        max-width: 100%;
+        width: auto;
+        margin-left: 70px;
+        float: none;
+      }
+
+      .federal-panel .timeline-item:nth-child(odd) .timeline-content::after {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        width: 0;
+        height: 0;
+        top: 30px;
+        left: -15px;
+        border-width: 10px 15px 10px 0;
+        border-color: transparent #f5f5f5 transparent transparent;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top: map + state details -->
+  <main class="layout">
+    <!-- MAP -->
+    <section class="map-panel">
+      <h1>US State AI Legislation</h1>
+      <p style="margin-top:0.25rem;font-size:0.95rem;color:#555;">
+        Click a state to see a timeline of AI-related bills and actions.
+      </p>
+
+      <!-- SVG; D3 will draw the US map inside this -->
+      <svg id="us-map"></svg>
+    </section>
+
+    <!-- STATE DETAILS -->
+    <aside class="details-panel" id="details-panel">
+      <h2>State Details</h2>
+      <p id="details-placeholder">
+        Click on a state in the map to see its AI legislation timeline.
+      </p>
+      <div id="details-content" style="display:none;"></div>
+
+      <p class="disclaimer">
+        This is a simplified summary for educational use only.
+        Always check official state legislative websites for up-to-date and authoritative information.
+      </p>
+    </aside>
+  </main>
+
+  <!-- Bottom: federal AI regulation timeline -->
+  <div class="federal-panel-wrapper">
+    <section class="federal-panel">
+      <h2>Federal AI Regulation Timeline (United States)</h2>
+      <p style="font-size:0.9rem;color:#555;margin-top:0.25rem;">
+        High-level vertical timeline of notable federal AI-related actions and policy milestones
+        (top = earliest, bottom = most recent).
+      </p>
+
+      <div id="federal-timeline-root"></div>
+
+      <p class="disclaimer">
+        Events are simplified and not exhaustive. For legal or policy work, always consult official federal sources.
+      </p>
+    </section>
+  </div>
+
+  <!-- Scripts: D3 + TopoJSON + jQuery + ScrollReveal -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+  <script>
+    // ====================================
+    // 1. State AI legislation data (as timelines)
+    // ====================================
+    const AI_LEGISLATION = {
+      CA: {
+        name: "California",
+        events: [
+          {
+            date: "2019-10-01",
+            title: "Deepfake Election Law",
+            status: "Enacted",
+            summary:
+              "Early legislation restricting certain political deepfakes close to elections, signaling the state's concern about AI-generated misinformation.",
+            links: [
+              {
+                label: "Bill text / overview",
+                url: "https://leginfo.legislature.ca.gov/"
+              }
+            ]
+          },
+          {
+            date: "2022-09-15",
+            title: "Automated Decision Systems (ADS) Proposal",
+            status: "Proposed",
+            summary:
+              "Proposal to regulate high-risk automated decision systems used for employment, housing, and credit, emphasizing impact assessments and transparency.",
+            links: []
+          },
+          {
+            date: "2025-06-20",
+            title: "Comprehensive AI Accountability Framework",
+            status: "In discussion",
+            summary:
+              "Broader framework exploring obligations for developers and deployers of high-impact AI systems, including documentation, risk management, and user notice.",
+            links: [
+              {
+                label: "California Legislative Information",
+                url: "https://leginfo.legislature.ca.gov/"
+              }
+            ]
+          }
+        ]
+      },
+      OR: {
+        name: "Oregon",
+        events: [
+          {
+            date: "2021-02-10",
+            title: "Government Use of Automated Tools",
+            status: "Proposed",
+            summary:
+              "Initial bill to study and regulate automated decision systems used by state agencies, with a focus on fairness and transparency.",
+            links: [
+              {
+                label: "Oregon Legislature search",
+                url: "https://olis.oregonlegislature.gov/"
+              }
+            ]
+          },
+          {
+            date: "2024-03-05",
+            title: "AI Accountability & Impact Reporting",
+            status: "Proposed",
+            summary:
+              "Follow-up legislation targeting impact reports for AI systems in sensitive areas like credit, employment, and access to public benefits.",
+            links: []
+          }
+        ]
+      },
+      WA: {
+        name: "Washington",
+        events: [
+          {
+            date: "2020-03-31",
+            title: "Facial Recognition & Automated Systems",
+            status: "Enacted (related)",
+            summary:
+              "Law addressing facial recognition and automated systems in public agencies, often treated as a foundation for later AI regulation discussions.",
+            links: [
+              {
+                label: "Washington Legislature",
+                url: "https://leg.wa.gov/"
+              }
+            ]
+          },
+          {
+            date: "2023-04-12",
+            title: "AI in Public Sector Study Bill",
+            status: "Proposed",
+            summary:
+              "Bill to study risks and uses of AI systems across state agencies, including recommendations for future governance.",
+            links: []
+          }
+        ]
+      },
+      NY: {
+        name: "New York",
+        events: [
+          {
+            date: "2021-11-15",
+            title: "Automated Employment Decision Tools",
+            status: "Enacted",
+            summary:
+              "Law regulating algorithmic hiring tools, requiring bias audits and transparency for certain automated employment decisions.",
+            links: [
+              {
+                label: "NY legislative portal",
+                url: "https://nyassembly.gov/leg/"
+              }
+            ]
+          },
+          {
+            date: "2024-06-30",
+            title: "AI & Deepfake Consumer Protection Bill",
+            status: "Proposed",
+            summary:
+              "Proposal addressing AI-generated deepfakes and consumer deception, including potential labeling and remedies.",
+            links: []
+          }
+        ]
+      },
+      TX: {
+        name: "Texas",
+        events: [
+          {
+            date: "2022-05-20",
+            title: "Deepfake Misuse in Elections",
+            status: "Enacted (related)",
+            summary:
+              "Legislation targeting certain deceptive deepfake uses in political contexts, intersecting with AI-generated content.",
+            links: [
+              {
+                label: "Texas Legislature Online",
+                url: "https://capitol.texas.gov/"
+              }
+            ]
+          },
+          {
+            date: "2023-09-01",
+            title: "AI in Education & Online Safety",
+            status: "Proposed",
+            summary:
+              "Bills exploring the role of AI tools in education and student safety, including limits on harmful synthetic content.",
+            links: []
+          }
+        ]
+      }
+      // Add more states as needed
+    };
+
+    // Sort state events oldest -> newest
+    Object.values(AI_LEGISLATION).forEach(state => {
+      state.events.sort((a, b) => new Date(a.date) - new Date(b.date));
+    });
+
+    // ====================================
+    // 2. Federal AI regulation timeline data
+    // ====================================
+    const FEDERAL_AI_EVENTS = [
+      {
+        date: "2019-02-11",
+        title: "High-Level Federal AI Strategy Announced",
+        status: "Policy guidance",
+        summary:
+          "Initial high-level federal strategy outlining priorities for AI research, development, and international competitiveness.",
+        links: []
+      },
+      {
+        date: "2021-01-01",
+        title: "Foundational AI Principles / Guidance",
+        status: "Guidance",
+        summary:
+          "Federal guidance emphasizing trustworthy AI, civil rights, and transparency in public-sector AI use.",
+        links: []
+      },
+      {
+        date: "2023-01-26",
+        title: "AI Risk Management Framework (Example)",
+        status: "Framework",
+        summary:
+          "A risk-oriented framework for organizations designing, developing, or deploying AI systems, focusing on governance and responsible practices.",
+        links: []
+      },
+      {
+        date: "2023-10-30",
+        title: "Executive-Level Direction on Safe & Secure AI",
+        status: "Executive action",
+        summary:
+          "A wide-ranging executive-level action addressing safety, security, civil rights, labor impacts, and innovation in AI.",
+        links: []
+      },
+      {
+        date: "2024-06-01",
+        title: "Ongoing Congressional Hearings on AI",
+        status: "In progress",
+        summary:
+          "Ongoing hearings and draft bills exploring national AI rules on topics like model safety, transparency, data protection, and sector-specific regulation.",
+        links: []
+      }
+    ];
+
+    FEDERAL_AI_EVENTS.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // ====================================
+    // 3. FIPS -> state abbreviation mapping
+    // ====================================
+    const FIPS_TO_ABBR = {
+      "01":"AL","02":"AK","04":"AZ","05":"AR","06":"CA","08":"CO","09":"CT",
+      "10":"DE","11":"DC","12":"FL","13":"GA","15":"HI","16":"ID","17":"IL",
+      "18":"IN","19":"IA","20":"KS","21":"KY","22":"LA","23":"ME","24":"MD",
+      "25":"MA","26":"MI","27":"MN","28":"MS","29":"MO","30":"MT","31":"NE",
+      "32":"NV","33":"NH","34":"NJ","35":"NM","36":"NY","37":"NC","38":"ND",
+      "39":"OH","40":"OK","41":"OR","42":"PA","44":"RI","45":"SC","46":"SD",
+      "47":"TN","48":"TX","49":"UT","50":"VT","51":"VA","53":"WA","54":"WV",
+      "55":"WI","56":"WY"
+    };
+
+    // ====================================
+    // 4. Draw US map with D3
+    // ====================================
+    const width = 960;
+    const height = 600;
+
+    const svg = d3.select("#us-map")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+
+    const projection = d3.geoAlbersUsa()
+      .scale(1280)
+      .translate([width / 2, height / 2]);
+
+    const path = d3.geoPath(projection);
+
+    const US_TOPO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
+
+    d3.json(US_TOPO_URL).then(us => {
+      const states = topojson.feature(us, us.objects.states).features;
+
+      const statePaths = svg.selectAll("path")
+        .data(states)
+        .join("path")
+        .attr("d", path)
+        .attr("data-abbr", d => FIPS_TO_ABBR[d.id] || null)
+        .attr("data-has-ai", d => {
+          const abbr = FIPS_TO_ABBR[d.id];
+          return AI_LEGISLATION[abbr] ? "true" : null;
+        });
+
+      statePaths
+        .attr("fill", d => {
+          const abbr = FIPS_TO_ABBR[d.id];
+          return AI_LEGISLATION[abbr] ? "#b0c4ff" : "#e0e0e0";
+        })
+        .attr("stroke", "#ffffff")
+        .attr("stroke-width", 0.5)
+        .style("cursor", "pointer");
+
+      // Attach click handler
+      statePaths.on("click", function(event, d) {
+        const abbr = FIPS_TO_ABBR[d.id];
+        if (!abbr) return;
+
+        // Clear selection
+        statePaths.attr("data-selected", null);
+        d3.select(this).attr("data-selected", "true");
+
+        renderStateDetails(abbr);
+      });
+    }).catch(err => {
+      console.error("Error loading US map data:", err);
+    });
+
+    // ====================================
+    // 5. State details panel
+    // ====================================
+    function renderStateDetails(stateAbbr) {
+      const placeholder = document.getElementById("details-placeholder");
+      const container = document.getElementById("details-content");
+      const stateInfo = AI_LEGISLATION[stateAbbr];
+
+      placeholder.style.display = "none";
+      container.style.display = "block";
+
+      if (!stateInfo) {
+        container.innerHTML = `
+          <h3 class="state-title">${stateAbbr}</h3>
+          <p class="state-subtitle">No AI-specific legislation timeline has been added for this state yet.</p>
+        `;
+        return;
+      }
+
+      const eventsHtml = (stateInfo.events || [])
+        .map(ev => {
+          const dateLabel = ev.date ? new Date(ev.date).toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric"
+          }) : "Unknown date";
+
+          const linksHtml = (ev.links || [])
+            .map(
+              (link) =>
+                `<li><a href="${link.url}" target="_blank" rel="noreferrer">${link.label}</a></li>`
+            )
+            .join("");
+
+          return `
+            <div class="state-timeline-item">
+              <div class="state-timeline-marker"></div>
+              <div class="state-timeline-content">
+                <div class="state-timeline-date">${dateLabel}</div>
+                <div class="state-timeline-title">
+                  ${ev.title || "AI-related action"}
+                  ${ev.status ? `<span class="state-timeline-status">${ev.status}</span>` : ""}
+                </div>
+                ${ev.summary ? `<p class="state-timeline-summary">${ev.summary}</p>` : ""}
+                ${linksHtml ? `<ul class="state-timeline-links">${linksHtml}</ul>` : ""}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+
+      container.innerHTML = `
+        <h3 class="state-title">${stateInfo.name} (${stateAbbr})</h3>
+        <p class="state-subtitle">
+          Timeline of notable AI-related bills and actions
+          (top: earliest, bottom: most recent).
+        </p>
+        ${eventsHtml ? `<div class="state-timeline">${eventsHtml}</div>` : `<p>No events recorded yet.</p>`}
+      `;
+    }
+
+    // ====================================
+    // 6. Federal timeline markup (CodePen-style)
+    // ====================================
+    function formatFederalDateLabel(d) {
+      if (!d) return "Unknown";
+      const dt = new Date(d);
+      const day = dt.getDate().toString().padStart(2, "0");
+      const month = dt.toLocaleString(undefined, { month: "short" });
+      const year = dt.getFullYear();
+      return `${day} ${month} ${year}`;
+    }
+
+    function renderFederalTimeline() {
+      const root = document.getElementById("federal-timeline-root");
+      if (!FEDERAL_AI_EVENTS.length) {
+        root.innerHTML = "<p>No federal events recorded yet.</p>";
+        return;
+      }
+
+      let html = '<section class="timeline">';
+      FEDERAL_AI_EVENTS.forEach((ev, idx) => {
+        const dateLabel = formatFederalDateLabel(ev.date);
+        const linksHtml = (ev.links || [])
+          .map(l => `<li><a href="${l.url}" target="_blank" rel="noreferrer">${l.label}</a></li>`)
+          .join("");
+
+        // Alternate animation classes for ScrollReveal
+        const animClass = (idx % 2 === 0) ? 'js--fadeInLeft' : 'js--fadeInRight';
+
+        html += `
+          <div class="timeline-item">
+            <div class="timeline-img"></div>
+            <div class="timeline-content timeline-card ${animClass}">
+              <div class="timeline-img-header">
+                <h2>${ev.title || "AI-related federal action"}</h2>
+              </div>
+              <div class="date">${dateLabel}</div>
+              ${ev.summary ? `<p>${ev.summary}</p>` : ""}
+              ${linksHtml ? `<ul class="f-links">${linksHtml}</ul>` : ""}
+            </div>
+          </div>
+        `;
+      });
+      html += "</section>";
+
+      root.innerHTML = html;
+    }
+
+    renderFederalTimeline();
+
+    // ====================================
+    // 7. ScrollReveal animation from provided JS
+    // ====================================
+    $(function(){
+      window.sr = ScrollReveal();
+
+      if ($(window).width() < 768) {
+
+        if ($('.timeline-content').hasClass('js--fadeInLeft')) {
+          $('.timeline-content')
+            .removeClass('js--fadeInLeft')
+            .addClass('js--fadeInRight');
+        }
+
+        sr.reveal('.js--fadeInRight', {
+          origin: 'right',
+          distance: '300px',
+          easing: 'ease-in-out',
+          duration: 800,
+        });
+
+      } else {
+
+        sr.reveal('.js--fadeInLeft', {
+          origin: 'left',
+          distance: '300px',
+          easing: 'ease-in-out',
+          duration: 800,
+        });
+
+        sr.reveal('.js--fadeInRight', {
+          origin: 'right',
+          distance: '300px',
+          easing: 'ease-in-out',
+          duration: 800,
+        });
+      }
+
+      // (Redundant calls kept to match original snippet)
+      sr.reveal('.js--fadeInLeft', {
+        origin: 'left',
+        distance: '300px',
+        easing: 'ease-in-out',
+        duration: 800,
+      });
+
+      sr.reveal('.js--fadeInRight', {
+        origin: 'right',
+        distance: '300px',
+        easing: 'ease-in-out',
+        duration: 800,
+      });
+    });
+  </script>
+</body>
+</html>
