@@ -13,6 +13,9 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- ScrollReveal for the vertical timeline animation -->
   <script src="https://unpkg.com/scrollreveal"></script>
+  
+  <!-- Icons for Scorecard -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
     :root {
@@ -26,9 +29,11 @@
       --chip-bg: rgba(79, 70, 229, 0.16);
       --chip-border: rgba(129, 140, 248, 0.5);
       --badge-bg: rgba(248, 250, 252, 0.05);
-      --danger: #f97373;
-      --success: #4ade80;
-      --warning: #facc15;
+      
+      /* Status Colors */
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
     }
 
     * {
@@ -109,6 +114,7 @@
       }
     }
 
+    /* Main Cards */
     .card {
       background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.86));
       border-radius: 1rem;
@@ -417,6 +423,125 @@
         left: -0.28rem !important;
       }
     }
+
+    /* ========================================= */
+    /* SCORECARD SECTION STYLES                  */
+    /* ========================================= */
+    .scorecard-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .score-card {
+      background: #1e293b;
+      border: 1px solid var(--border-subtle);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .score-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border-color: #475569;
+    }
+
+    .score-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.8rem;
+      color: #60a5fa;
+    }
+    
+    .score-card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: #f8fafc;
+    }
+    
+    .score-card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin: 0 0 1.2rem 0;
+      flex-grow: 1; 
+      line-height: 1.4;
+    }
+
+    .evaluation {
+      background: rgba(0,0,0,0.2);
+      border-radius: 0.75rem;
+      padding: 0.8rem;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-label { text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+    .status-value { transition: color 0.3s; }
+
+    .meter-container {
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s;
+    }
+
+    .slider-container {
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      cursor: pointer;
+      border: 2px solid #1e293b;
+      transition: background 0.2s;
+    }
+    .slider:hover::-webkit-slider-thumb { background: #fff; }
+
   </style>
 </head>
 <body>
@@ -494,6 +619,26 @@
         <div id="federal-timeline-root"></div>
       </div>
     </section>
+
+    <!-- NEW: AI Bill of Rights Scorecard Section -->
+    <section class="scorecard-section">
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <div>
+             <h2 class="card-title">Blueprint for an AI Bill of Rights</h2>
+             <p class="card-subtitle">Compliance scorecard evaluating alignment with the five core principles.</p>
+          </div>
+        </div>
+        
+        <div class="score-grid" id="scorecard-grid">
+           <!-- JS will inject scorecard items here -->
+        </div>
+        
+        <div style="margin-top: 1rem; text-align: center;">
+           <small class="placeholder">Drag sliders to test compliance visualization logic.</small>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -536,14 +681,11 @@
         if (!res.ok) throw new Error("Failed to load federal JSON");
         
         const data = await res.json();
-        
         // Sort oldest -> newest
         data.sort((a, b) => new Date(a.date) - new Date(b.date));
         
         FEDERAL_AI_EVENTS = data;
 
-        // Re-render the timeline now that we have data
-        // (This function is defined later in Section 6, which is fine)
         if (typeof renderFederalTimeline === "function") {
           renderFederalTimeline();
         }
@@ -732,7 +874,7 @@
     renderFederalTimeline();
 
     // ====================================
-    // 7. ScrollReveal animation (CodePen-style)
+    // 7. ScrollReveal animation
     // ====================================
     $(function () {
       if (typeof ScrollReveal === "undefined") return;
@@ -768,6 +910,124 @@
         });
       }
     });
+
+    // ====================================
+    // 8. Scorecard Logic (NEW)
+    // ====================================
+    const pillars = [
+      {
+        id: 1,
+        title: "Safe and Effective Systems",
+        desc: "Automated systems should be developed with consultation and rigorous testing.",
+        icon: "shield-check",
+        score: 92
+      },
+      {
+        id: 2,
+        title: "Algorithmic Discrimination",
+        desc: "You should not face discrimination by algorithms and systems.",
+        icon: "scale",
+        score: 45
+      },
+      {
+        id: 3,
+        title: "Data Privacy",
+        desc: "You should be protected from abusive data practices via built-in protections.",
+        icon: "lock",
+        score: 78
+      },
+      {
+        id: 4,
+        title: "Notice and Explanation",
+        desc: "You should know that an automated system is being used and understand how.",
+        icon: "bell-ring",
+        score: 30
+      },
+      {
+        id: 5,
+        title: "Human Alternatives",
+        desc: "You should be able to opt out and have access to a person to remedy problems.",
+        icon: "users",
+        score: 65
+      }
+    ];
+
+    const scorecardGrid = document.getElementById('scorecard-grid');
+
+    function getScoreColor(score) {
+      if (score >= 80) return 'var(--success)';
+      if (score >= 50) return 'var(--warning)';
+      return 'var(--danger)';
+    }
+
+    function getScoreLabel(score) {
+      if (score >= 80) return 'Met';
+      if (score >= 50) return 'Partial';
+      return 'Failed';
+    }
+
+    function renderScorecard() {
+      if (!scorecardGrid) return;
+      scorecardGrid.innerHTML = pillars.map(pillar => `
+        <div class="score-card">
+          <div class="score-card-icon">
+            <i data-lucide="${pillar.icon}"></i>
+          </div>
+          <h3>${pillar.title}</h3>
+          <p>${pillar.desc}</p>
+          
+          <div class="evaluation">
+            <div class="status-header">
+              <span class="status-label">Alignment</span>
+              <span class="status-value" id="label-${pillar.id}" style="color: ${getScoreColor(pillar.score)}">
+                ${getScoreLabel(pillar.score)}
+              </span>
+            </div>
+            
+            <div class="meter-container">
+              <div 
+                class="meter-fill" 
+                id="fill-${pillar.id}"
+                style="width: ${pillar.score}%; background-color: ${getScoreColor(pillar.score)}"
+              ></div>
+            </div>
+
+            <div class="slider-container">
+              <input 
+                type="range" 
+                min="0" 
+                max="100" 
+                value="${pillar.score}" 
+                class="slider" 
+                oninput="updateScoreCard(${pillar.id}, this.value)"
+                aria-label="Adjust score for ${pillar.title}"
+              >
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      // Initialize icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    }
+
+    window.updateScoreCard = function(id, value) {
+      const score = parseInt(value);
+      const labelEl = document.getElementById(`label-${id}`);
+      const fillEl = document.getElementById(`fill-${id}`);
+      
+      if(labelEl && fillEl) {
+        labelEl.innerText = getScoreLabel(score);
+        labelEl.style.color = getScoreColor(score);
+        fillEl.style.width = `${score}%`;
+        fillEl.style.backgroundColor = getScoreColor(score);
+      }
+    };
+
+    renderScorecard();
+
   </script>
 </body>
 </html>
