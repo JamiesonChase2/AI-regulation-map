@@ -595,9 +595,7 @@
         AI Regulation Map
       </h1>
       <p class="page-subtitle">
-        Click a state to view its AI-related bills and policy activity. Data is loaded
-        from a JSON file (<code>state-ai-legislation.json</code>) so it can be easily
-        updated without changing the HTML.
+        Click a state to view its AI-related bills and policy activity.
       </p>
     </header>
 
@@ -608,7 +606,7 @@
           <div>
             <h2 class="card-title">US States</h2>
             <p class="card-subtitle">
-              Highlighted states have at least one AI-related timeline entry in the JSON.
+              Highlighted states have at least one AI-related timeline entry.
             </p>
           </div>
           <div class="chip-row">
@@ -636,8 +634,7 @@
           <div id="details-placeholder" class="state-panel-scroll">
             <p class="placeholder">
               No state selected yet. Click on a highlighted state in the map to load its
-              AI policy timeline. States without entries in the JSON will show a simple
-              “no data” message.
+              AI policy timeline.
             </p>
           </div>
 
@@ -678,7 +675,7 @@
         </div>
         
         <div style="margin-top: 1rem; text-align: center;">
-           <small class="placeholder">Current assessment based on available public data.</small>
+           <small class="placeholder"></small>
         </div>
       </div>
 
@@ -835,8 +832,7 @@
         container.innerHTML = `
           <h3 class="state-title">${stateAbbr}</h3>
           <p class="state-subtitle">
-            No AI-specific legislation data has been added for this state yet
-            in <code>state-ai-legislation.json</code>.
+            No AI-specific legislation data has been added for this state yet.
           </p>
         `;
         return;
