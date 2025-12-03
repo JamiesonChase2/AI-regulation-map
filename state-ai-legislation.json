@@ -1,25 +1,98 @@
 {
-  "CA": {
+"CA": {
     "name": "California",
     "events": [
       {
         "date": "2019-10-03",
-        "title": "Deepfake Election Law",
+        "title": "Deepfake Election Law (AB 730)",
         "status": "Enacted",
-        "summary": "Restricts distribution of deceptive deepfake videos close to elections.",
+        "summary": "Prohibits the distribution of materially deceptive audio or visual media of a candidate within 60 days of an election.",
         "links": [
           {
             "label": "Bill Text",
-            "url": "https://leginfo.legislature.ca.gov/"
+            "url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201920200AB730"
           }
         ]
       },
       {
-        "date": "2022-09-14",
-        "title": "Automated Decision Tools Accountability Act (Proposed)",
-        "status": "Proposed",
-        "summary": "Would regulate high-risk automated decision systems for employment, housing, and credit.",
-        "links": []
+        "date": "2024-09-17",
+        "title": "Digital Replicas Laws (AB 2602, AB 1836)",
+        "status": "Enacted",
+        "summary": "Protects performers from unauthorized digital replicas in contracts (AB 2602) and protects the digital likeness of deceased personalities (AB 1836).",
+        "links": [
+          {
+            "label": "AB 2602 Info",
+            "url": "https://legiscan.com/CA/bill/AB2602/2023"
+          },
+          {
+            "label": "AB 1836 Info",
+            "url": "https://legiscan.com/CA/bill/AB1836/2023"
+          }
+        ]
+      },
+      {
+        "date": "2024-09-17",
+        "title": "Deepfake Election Deception Laws (AB 2655, AB 2839)",
+        "status": "Enacted",
+        "summary": "Requires platforms to block deceptive election content (AB 2655) and restricts distribution of election deepfakes (AB 2839).",
+        "links": [
+          {
+            "label": "AB 2655 Info",
+            "url": "https://legiscan.com/CA/bill/AB2655/2023"
+          },
+          {
+            "label": "AB 2839 Info",
+            "url": "https://legiscan.com/CA/bill/AB2839/2023"
+          }
+        ]
+      },
+      {
+        "date": "2024-09-19",
+        "title": "California AI Transparency Act (SB 942)",
+        "status": "Enacted",
+        "summary": "Requires large generative AI providers to create AI detection tools and include disclosure options for AI-generated content.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202320240SB942"
+          }
+        ]
+      },
+      {
+        "date": "2024-09-28",
+        "title": "Generative AI Training Data Transparency (AB 2013)",
+        "status": "Enacted",
+        "summary": "Requires developers of generative AI systems to publicly disclose information about the data used to train their models.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://legiscan.com/CA/bill/AB2013/2023"
+          }
+        ]
+      },
+      {
+        "date": "2025-09-29",
+        "title": "Transparency in Frontier Artificial Intelligence Act (SB 53)",
+        "status": "Enacted",
+        "summary": "Establishes a comprehensive framework for frontier AI safety, requiring large developers to publish safety frameworks and report critical incidents.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260SB53"
+          }
+        ]
+      },
+      {
+        "date": "2025-10-13",
+        "title": "AI Safety and Defense Laws (AB 316, AB 621, SB 243)",
+        "status": "Enacted",
+        "summary": "Prevents 'autonomous AI' defenses in liability claims (AB 316), expands deepfake pornography protections (AB 621), and regulates companion chatbots (SB 243).",
+        "links": [
+          {
+            "label": "Governor's Signing",
+            "url": "https://www.gov.ca.gov/2025/10/13/governor-newsom-signs-bills-to-further-strengthen-californias-leadership-in-protecting-children-online/"
+          }
+        ]
       }
     ]
   },
@@ -120,22 +193,68 @@
     ]
   },
 
-  "TX": {
+"TX": {
     "name": "Texas",
     "events": [
       {
         "date": "2019-06-14",
-        "title": "Deepfake Revenge Porn Criminalization",
+        "title": "Deepfake Election Law (SB 751)",
         "status": "Enacted",
-        "summary": "Made malicious deepfake pornography illegal.",
-        "links": []
+        "summary": "Criminalizes the creation and distribution of deepfake videos intended to injure a candidate or influence an election within 30 days of the vote.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=86R&Bill=SB751"
+          }
+        ]
       },
       {
-        "date": "2023-05-01",
-        "title": "AI Task Force Bill",
-        "status": "Proposed",
-        "summary": "Would establish a statewide task force to study AI's impact on government.",
-        "links": []
+        "date": "2023-06-18",
+        "title": "Texas Data Privacy and Security Act (HB 4)",
+        "status": "Enacted",
+        "summary": "Comprehensive privacy law that includes consumer rights to opt-out of profiling and automated decision-making.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=88R&Bill=HB4"
+          }
+        ]
+      },
+      {
+        "date": "2025-06-20",
+        "title": "Stopping AI-Generated Child Pornography Act (SB 20)",
+        "status": "Enacted",
+        "summary": "Creates new criminal offenses for the possession, promotion, or production of obscene visual material appearing to depict a child, including AI-generated content.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=SB20"
+          }
+        ]
+      },
+      {
+        "date": "2025-06-20",
+        "title": "Deepfake Pornography Liability (SB 441)",
+        "status": "Enacted",
+        "summary": "Expands criminal and civil liability for the creation and distribution of non-consensual deepfake pornography, including still images.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=SB441"
+          }
+        ]
+      },
+      {
+        "date": "2025-06-22",
+        "title": "Texas Responsible AI Governance Act (HB 149)",
+        "status": "Enacted",
+        "summary": "Establishes the Texas Artificial Intelligence Council and prohibits government entities from using AI for social scoring or biometric surveillance without consent.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&Bill=HB149"
+          }
+        ]
       }
     ]
   },
