@@ -431,6 +431,27 @@
         left: -0.28rem !important;
       }
     }
+    /* NEW STYLES FOR FEDERAL TIMELINE LINKS */
+    .timeline-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .timeline-links a {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--accent-soft);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .timeline-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-soft);
+      text-decoration: none;
+    }
 
     /* ========================================= */
     /* SCORECARD SECTION STYLES                  */
