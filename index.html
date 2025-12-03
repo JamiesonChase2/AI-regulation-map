@@ -42,6 +42,11 @@
       box-sizing: border-box;
     }
 
+    /* FIX: Set html background to avoid white overscroll areas */
+    html {
+      background-color: #020617;
+    }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
@@ -49,6 +54,7 @@
       background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
       color: var(--text-primary);
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
 
     a {
@@ -517,6 +523,69 @@
       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s;
     }
 
+    /* METHODOLOGY STYLES (UPDATED FOR FANCY FORMATTING) */
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    
+    @media(min-width: 768px) {
+      .methodology-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .method-item {
+      background: rgba(30, 41, 59, 0.4); 
+      border: 1px solid var(--border-subtle);
+      border-top: 3px solid var(--item-color); 
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    }
+    
+    .method-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      background: rgba(30, 41, 59, 0.6);
+    }
+
+    .method-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .method-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f8fafc;
+      margin: 0;
+    }
+
+    .method-badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(255,255,255,0.05);
+      color: var(--item-color);
+      border: 1px solid var(--item-color);
+      box-shadow: 0 0 10px -2px var(--item-color);
+    }
+
+    .method-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
   </style>
 </head>
 <body>
@@ -595,7 +664,7 @@
       </div>
     </section>
 
-    <!-- NEW: AI Bill of Rights Scorecard Section -->
+    <!-- AI Bill of Rights Scorecard Section -->
     <section class="scorecard-section">
       <div class="card" style="margin-top: 1.5rem;">
         <div class="card-header">
@@ -611,6 +680,16 @@
         
         <div style="margin-top: 1rem; text-align: center;">
            <small class="placeholder">Current assessment based on available public data.</small>
+        </div>
+      </div>
+
+      <!-- NEW: Assessment Rationale (Detailed Explanation Per Section) -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+           <h2 class="card-title">Assessment Rationale</h2>
+        </div>
+        <div class="methodology-grid" id="rationale-grid">
+           <!-- JS will inject specific rationale for each pillar here -->
         </div>
       </div>
     </section>
@@ -895,39 +974,45 @@
         title: "Safe and Effective Systems",
         desc: "Automated systems should be developed with consultation and rigorous testing.",
         icon: "shield-check",
-        score: 92
+        score: 92,
+        explanation: "This principle receives a high score (92) because federal agencies have actively adopted NIST's AI Risk Management Framework, and pre-deployment testing has become a standard requirement for government-procured AI tools. Recent executive orders specifically mandate red-teaming for dual-use foundation models, creating a strong safety baseline that is currently being implemented effectively."
       },
       {
         id: 2,
         title: "Algorithmic Discrimination",
         desc: "You should not face discrimination by algorithms and systems.",
         icon: "scale",
-        score: 45
+        score: 45,
+        explanation: "A score of 45 reflects the 'Unclear' status of algorithmic fairness. While the blueprint calls for equity, enforcement mechanisms remain fragmented. Agencies have issued joint statements against discrimination, but specific technical standards for auditing bias in black-box models are still under development, leaving a gap between policy intent and practical application."
       },
       {
         id: 3,
         title: "Data Privacy",
         desc: "You should be protected from abusive data practices via built-in protections.",
         icon: "lock",
-        score: 78
+        score: 78,
+        explanation: "Data privacy scores reasonably well (78) due to the existence of established privacy laws like the Privacy Act of 1974 and sector-specific regulations (HIPAA, FCRA) that have been successfully adapted to AI contexts. However, the lack of a comprehensive federal data privacy law prevents this from being a fully 'Met' category."
       },
       {
         id: 4,
         title: "Notice and Explanation",
         desc: "You should know that an automated system is being used and understand how.",
         icon: "bell-ring",
-        score: 30
+        score: 30,
+        explanation: "This area is 'Partially Failed' (30) because meaningful transparency remains elusive. While some regulations require disclosure when AI is used, the 'explanations' provided are often technical and unintelligible to the average user. There is currently no standardized requirement for plain-language impact statements across all automated systems."
       },
       {
         id: 5,
         title: "Human Alternatives",
         desc: "You should be able to opt out and have access to a person to remedy problems.",
         icon: "users",
-        score: 65
+        score: 65,
+        explanation: "Scoring 65 (Partially Met), human alternatives exist in theory but are often burdened by friction. Federal guidelines mandate human fallbacks for critical decisions (like benefits eligibility), but user experience reports suggest that accessing these human agents is often difficult, time-consuming, and inconsistent across different agencies."
       }
     ];
 
     const scorecardGrid = document.getElementById('scorecard-grid');
+    const rationaleGrid = document.getElementById('rationale-grid');
 
     // 5-Tier Logic: [Failed -> Partially Failed -> Unclear -> Partially Met -> Met]
     // Mapped to a Red -> Orange -> Yellow -> Lime -> Green spectrum.
@@ -950,6 +1035,7 @@
     function renderScorecard() {
       if (!scorecardGrid) return;
       
+      // 1. Render Top Scorecards
       scorecardGrid.innerHTML = pillars.map(pillar => `
         <div class="score-card">
           <div class="score-card-icon">
@@ -976,6 +1062,19 @@
         </div>
       `).join('');
       
+      // 2. Render Bottom Rationale (Fancier Cards)
+      if (rationaleGrid) {
+         rationaleGrid.innerHTML = pillars.map(pillar => `
+            <div class="method-item" style="--item-color: ${getScoreColor(pillar.score)}">
+              <div class="method-header">
+                <h4 class="method-title">${pillar.title}</h4>
+                <span class="method-badge">${getScoreLabel(pillar.score)}</span>
+              </div>
+              <p>${pillar.explanation}</p>
+            </div>
+         `).join('');
+      }
+
       // Initialize icons
       if (typeof lucide !== 'undefined') {
         lucide.createIcons();
