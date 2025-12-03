@@ -905,6 +905,9 @@
 
       const itemsHtml = FEDERAL_AI_EVENTS.map(ev => {
         const dateLabel = formatFederalDateLabel(ev.date);
+        const linksHtml = (ev.links || [])
+          .map(link => `<a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.label}</a>`)
+          .join("");
         return `
           <div class="timeline-item js--fadeInRight">
             <div class="timeline-content">
@@ -912,6 +915,7 @@
               <h3 class="timeline-title">${ev.title}</h3>
               <div class="timeline-status">${ev.status}</div>
               <p class="timeline-summary">${ev.summary}</p>
+              ${linksHtml ? `<div class="timeline-links">${linksHtml}</div>` : ""}
             </div>
           </div>
         `;
