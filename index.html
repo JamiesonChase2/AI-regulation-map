@@ -30,10 +30,12 @@
       --chip-border: rgba(129, 140, 248, 0.5);
       --badge-bg: rgba(248, 250, 252, 0.05);
       
-      /* Status Colors */
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
+      /* Red-to-Green Gradient Spectrum Colors */
+      --status-met: #22c55e;              /* Green 500 */
+      --status-partially-met: #84cc16;    /* Lime 500 */
+      --status-unclear: #eab308;          /* Yellow 500 */
+      --status-partially-failed: #f97316; /* Orange 500 */
+      --status-failed: #ef4444;           /* Red 500 */
     }
 
     * {
@@ -515,33 +517,6 @@
       transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s;
     }
 
-    .slider-container {
-      margin-top: 0.8rem;
-      display: flex;
-      align-items: center;
-    }
-    
-    .slider {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 4px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 5px;
-      outline: none;
-      cursor: pointer;
-    }
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--text-muted);
-      cursor: pointer;
-      border: 2px solid #1e293b;
-      transition: background 0.2s;
-    }
-    .slider:hover::-webkit-slider-thumb { background: #fff; }
-
   </style>
 </head>
 <body>
@@ -635,7 +610,7 @@
         </div>
         
         <div style="margin-top: 1rem; text-align: center;">
-           <small class="placeholder">Drag sliders to test compliance visualization logic.</small>
+           <small class="placeholder">Current assessment based on available public data.</small>
         </div>
       </div>
     </section>
@@ -912,7 +887,7 @@
     });
 
     // ====================================
-    // 8. Scorecard Logic (NEW)
+    // 8. Scorecard Logic (5-Tier Red-Green Spectrum)
     // ====================================
     const pillars = [
       {
@@ -954,20 +929,27 @@
 
     const scorecardGrid = document.getElementById('scorecard-grid');
 
+    // 5-Tier Logic: [Failed -> Partially Failed -> Unclear -> Partially Met -> Met]
+    // Mapped to a Red -> Orange -> Yellow -> Lime -> Green spectrum.
     function getScoreColor(score) {
-      if (score >= 80) return 'var(--success)';
-      if (score >= 50) return 'var(--warning)';
-      return 'var(--danger)';
+      if (score >= 80) return 'var(--status-met)';
+      if (score >= 60) return 'var(--status-partially-met)';
+      if (score >= 40) return 'var(--status-unclear)';
+      if (score >= 20) return 'var(--status-partially-failed)';
+      return 'var(--status-failed)';
     }
 
     function getScoreLabel(score) {
       if (score >= 80) return 'Met';
-      if (score >= 50) return 'Partial';
+      if (score >= 60) return 'Partially Met';
+      if (score >= 40) return 'Unclear';
+      if (score >= 20) return 'Partially Failed';
       return 'Failed';
     }
 
     function renderScorecard() {
       if (!scorecardGrid) return;
+      
       scorecardGrid.innerHTML = pillars.map(pillar => `
         <div class="score-card">
           <div class="score-card-icon">
@@ -979,7 +961,7 @@
           <div class="evaluation">
             <div class="status-header">
               <span class="status-label">Alignment</span>
-              <span class="status-value" id="label-${pillar.id}" style="color: ${getScoreColor(pillar.score)}">
+              <span class="status-value" style="color: ${getScoreColor(pillar.score)}">
                 ${getScoreLabel(pillar.score)}
               </span>
             </div>
@@ -987,21 +969,8 @@
             <div class="meter-container">
               <div 
                 class="meter-fill" 
-                id="fill-${pillar.id}"
                 style="width: ${pillar.score}%; background-color: ${getScoreColor(pillar.score)}"
               ></div>
-            </div>
-
-            <div class="slider-container">
-              <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                value="${pillar.score}" 
-                class="slider" 
-                oninput="updateScoreCard(${pillar.id}, this.value)"
-                aria-label="Adjust score for ${pillar.title}"
-              >
             </div>
           </div>
         </div>
@@ -1012,19 +981,6 @@
         lucide.createIcons();
       }
     }
-
-    window.updateScoreCard = function(id, value) {
-      const score = parseInt(value);
-      const labelEl = document.getElementById(`label-${id}`);
-      const fillEl = document.getElementById(`fill-${id}`);
-      
-      if(labelEl && fillEl) {
-        labelEl.innerText = getScoreLabel(score);
-        labelEl.style.color = getScoreColor(score);
-        fillEl.style.width = `${score}%`;
-        fillEl.style.backgroundColor = getScoreColor(score);
-      }
-    };
 
     renderScorecard();
 
