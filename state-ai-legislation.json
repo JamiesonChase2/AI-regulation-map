@@ -42,27 +42,44 @@
     ]
   },
 
-  "WA": {
+"WA": {
     "name": "Washington",
     "events": [
       {
         "date": "2020-03-31",
-        "title": "Facial Recognition Law",
+        "title": "Facial Recognition Law (SB 6280)",
         "status": "Enacted",
-        "summary": "First state law regulating government use of facial recognition technology.",
+        "summary": "First state law regulating government use of facial recognition technology, requiring accountability reports and meaningful human review.",
         "links": [
           {
-            "label": "Summary",
-            "url": "https://app.leg.wa.gov/"
+            "label": "Bill Info",
+            "url": "https://app.leg.wa.gov/billsummary?BillNumber=6280&Year=2019"
           }
         ]
       },
       {
-        "date": "2023-01-15",
-        "title": "AI Task Force Proposal",
-        "status": "Proposed",
-        "summary": "Proposal to create a task force to study ethical AI and automated decision systems.",
-        "links": []
+        "date": "2024-03-18",
+        "title": "Artificial Intelligence Task Force (ESSB 5838)",
+        "status": "Enacted",
+        "summary": "Establishes an Artificial Intelligence Task Force to assess current uses and trends of AI in state government and the private sector, and to make recommendations to the Legislature.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://app.leg.wa.gov/billsummary?BillNumber=5838&Year=2023"
+          }
+        ]
+      },
+      {
+        "date": "2025-04-16",
+        "title": "Prohibition of Forged Digital Likeness (HB 1205)",
+        "status": "Enacted",
+        "summary": "Criminalizes the knowing distribution of a forged digital likeness (deepfake) to defraud, harass, threaten, or intimidate another person.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://app.leg.wa.gov/billsummary?BillNumber=1205&Year=2025"
+          }
+        ]
       }
     ]
   },
