@@ -24,18 +24,54 @@
     ]
   },
 
-  "OR": {
+"OR": {
     "name": "Oregon",
     "events": [
       {
-        "date": "2021-02-10",
-        "title": "Government Use of Automated Tools (Bill Proposal)",
-        "status": "Proposed",
-        "summary": "Bill to study and regulate government use of automated decision systems.",
+        "date": "2023-07-18",
+        "title": "Oregon Consumer Privacy Act (SB 619)",
+        "status": "Enacted",
+        "summary": "Establishes comprehensive consumer data rights, including the right to opt-out of profiling and automated decision-making.",
         "links": [
           {
-            "label": "Oregon Legislature",
-            "url": "https://olis.oregonlegislature.gov/"
+            "label": "Bill Info",
+            "url": "https://olis.oregonlegislature.gov/liz/2023R1/Measures/Overview/SB619"
+          }
+        ]
+      },
+      {
+        "date": "2024-03-27",
+        "title": "Artificial Intelligence Task Force (HB 4153)",
+        "status": "Enacted",
+        "summary": "Creates a task force to study AI terms and definitions for potential future legislation, reporting findings by late 2024.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://olis.oregonlegislature.gov/liz/2024R1/Measures/Overview/HB4153"
+          }
+        ]
+      },
+      {
+        "date": "2024-03-27",
+        "title": "Campaign Finance and Deepfake Disclosure (SB 1571)",
+        "status": "Enacted",
+        "summary": "Requires disclosure of the use of AI or other synthetic media in campaign advertisements to prevent voter deception.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://olis.oregonlegislature.gov/liz/2024R1/Measures/Overview/SB1571"
+          }
+        ]
+      },
+      {
+        "date": "2025-05-22",
+        "title": "Unlawful Dissemination of Intimate Images (HB 2299)",
+        "status": "Enacted",
+        "summary": "Criminalizes the dissemination of AI-generated intimate images (deepfake pornography) by including digitally created or manipulated depictions in the definition of intimate images.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://olis.oregonlegislature.gov/liz/2025R1/Measures/Overview/HB2299"
           }
         ]
       }
