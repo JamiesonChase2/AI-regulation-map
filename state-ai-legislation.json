@@ -417,37 +417,48 @@
     ]
   },
 
-  "MA": {
+"MA": {
     "name": "Massachusetts",
     "events": [
       {
-        "date": "2020-12-31",
-        "title": "Facial Recognition Moratorium (Local, Cities)",
-        "status": "Enacted",
-        "summary": "Several municipalities passed restrictions on government facial recognition use.",
-        "links": []
+        "date": "2024-02-14",
+        "title": "AI Strategic Task Force (Executive Order 629)",
+        "status": "Executive Action",
+        "summary": "Establishes the Artificial Intelligence Strategic Task Force to study AI/GenAI technology and advise the governor on implementation, economic impact, and ethical use.",
+        "links": [
+          {
+            "label": "Executive Order Text",
+            "url": "https://www.mass.gov/executive-orders/no-629-establishing-an-artificial-intelligence-strategic-task-force"
+          }
+        ]
       },
       {
-        "date": "2022-03-10",
-        "title": "Statewide AI Oversight Bill",
-        "status": "Proposed",
-        "summary": "Proposal for an AI oversight committee and ADS transparency requirements.",
-        "links": []
-      }
-    ]
-  },
-    "ID": {
-    "name": "Idaho",
-    "events": [
+        "date": "2024-04-16",
+        "title": "Attorney General Advisory on AI",
+        "status": "Guidance",
+        "summary": "Clarifies that existing state consumer protection, civil rights, and data privacy laws apply to AI developers and users, specifically regarding bias and transparency.",
+        "links": [
+          {
+            "label": "Advisory Info",
+            "url": "https://www.mass.gov/info-details/massachusetts-law-about-artificial-intelligence"
+          }
+        ]
+      },
       {
-        "date": "2025-09-12",
-        "title": "AI in Education Guidelines",
-        "status": "Enacted",
-        "summary": "Proposal to study use of AI tools in public schools and establish usage guidelines.",
-        "links": []
+        "date": "2025-10-16",
+        "title": "AI in Healthcare and Mental Health (SB 2632)",
+        "status": "Passed Senate",
+        "summary": "Prohibits AI from making independent therapeutic decisions in mental health and requires human review for insurance utilization decisions. (Note: Passed Senate, likely pending House/Governor action).",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://malegislature.gov/Bills/193/S2632"
+          }
+        ]
       }
     ]
   },
+    
     "AZ": {
     "name": "Arizona",
     "events": [
@@ -488,5 +499,155 @@
         ]
       }
     ]
-  }
+  },
+    "MI": {
+    "name": "Michigan",
+    "events": [
+      {
+        "date": "2023-11-30",
+        "title": "Political Ads AI Disclosure (HB 5141, HB 5143)",
+        "status": "Enacted",
+        "summary": "Requires qualified political advertisements generated in whole or in part by artificial intelligence to include a clear and conspicuous disclosure.",
+        "links": [
+          {
+            "label": "Bill Info (HB 5141)",
+            "url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2023-HB-5141"
+          }
+        ]
+      },
+      {
+        "date": "2023-11-30",
+        "title": "Deepfake Election Ban (HB 5144)",
+        "status": "Enacted",
+        "summary": "Prohibits the distribution of materially deceptive media (deepfakes) intended to influence an election within 90 days of the vote, unless disclosed.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2023-HB-5144"
+          }
+        ]
+      },
+      {
+        "date": "2025-08-26",
+        "title": "Deepfake Pornography Liability (HB 4047, HB 4048)",
+        "status": "Enacted",
+        "summary": "Establishes civil and criminal liability for the non-consensual dissemination of deepfake sexual images.",
+        "links": [
+          {
+            "label": "Bill Info (HB 4047)",
+            "url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-4047"
+          }
+        ]
+      }
+    ]
+  },
+    "PA": {
+    "name": "Pennsylvania",
+    "events": [
+      {
+        "date": "2024-10-09",
+        "title": "Combating AI-Generated Deepfake Images (SB 1213)",
+        "status": "Enacted",
+        "summary": "Criminalizes the creation and dissemination of AI-generated child sexual abuse material and deepfake images of minors and non-consenting adults.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.legis.state.pa.us/cfdocs/billinfo/bill_history.cfm?syear=2023&sind=0&body=S&type=B&bn=1213"
+          }
+        ]
+      },
+      {
+        "date": "2025-07-07",
+        "title": "Digital Forgery Law (SB 649)",
+        "status": "Enacted",
+        "summary": "Establishes a third-degree felony for using AI to generate fake voices, images, or videos (deepfakes) to defraud, injure, or scam individuals.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.legis.state.pa.us/cfdocs/billinfo/bill_history.cfm?syear=2025&sind=0&body=S&type=B&bn=649"
+          }
+        ]
+      }
+    ]
+  },
+    "NC": {
+    "name": "North Carolina",
+    "events": [
+      {
+        "date": "2025-09-02",
+        "title": "AI Leadership Council & Accelerator (Executive Order 24)",
+        "status": "Executive Action",
+        "summary": "Establishes the North Carolina AI Leadership Council and an AI Accelerator to guide state agencies on AI governance, literacy, and deployment.",
+        "links": [
+          {
+            "label": "Press Release",
+            "url": "https://governor.nc.gov/news/press-releases/2025/09/02/governor-stein-announces-executive-order-ai"
+          }
+        ]
+      }
+    ]
+  },
+    "IL": {
+    "name": "Illinois",
+    "events": [
+      {
+        "date": "2019-08-09",
+        "title": "Artificial Intelligence Video Interview Act (HB 2557)",
+        "status": "Enacted",
+        "summary": "Requires employers to notify applicants and obtain consent before using AI to analyze video interviews.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.ilga.gov/legislation/BillStatus.asp?DocNum=2557&GAID=15&DocTypeID=HB&SessionID=108&GA=101"
+          }
+        ]
+      },
+      {
+        "date": "2024-08-09",
+        "title": "AI in Employment Decisions (HB 3773)",
+        "status": "Enacted",
+        "summary": "Amends the Human Rights Act to require employer notice for AI use in hiring and prohibits discriminatory AI practices.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.ilga.gov/legislation/BillStatus.asp?DocNum=3773&GAID=17&DocTypeID=HB&SessionID=112&GA=103"
+          }
+        ]
+      },
+      {
+        "date": "2024-08-09",
+        "title": "Digital Voice and Likeness Protection Act (HB 4762)",
+        "status": "Enacted",
+        "summary": "Protects individuals from unauthorized use of their AI-generated voice or likeness in commercial contracts.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.ilga.gov/legislation/BillStatus.asp?DocNum=4762&GAID=17&DocTypeID=HB&SessionID=112&GA=103"
+          }
+        ]
+      },
+      {
+        "date": "2024-08-09",
+        "title": "Unauthorized Digital Replicas (HB 4875)",
+        "status": "Enacted",
+        "summary": "Prohibits the distribution of sound recordings or audiovisual works containing unauthorized AI-generated digital replicas of individuals.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.ilga.gov/legislation/BillStatus.asp?DocNum=4875&GAID=17&DocTypeID=HB&SessionID=112&GA=103"
+          }
+        ]
+      },
+      {
+        "date": "2025-08-04",
+        "title": "AI in Mental Health Therapy (HB 1806)",
+        "status": "Enacted",
+        "summary": "Regulates the use of AI in providing mental health services, ensuring it does not replace professional clinical judgment.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.ilga.gov/legislation/BillStatus.asp?DocNum=1806&GAID=18&DocTypeID=HB&SessionID=113&GA=104"
+          }
+        ]
+      }
 }
