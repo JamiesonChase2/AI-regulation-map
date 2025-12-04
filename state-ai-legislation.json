@@ -354,26 +354,6 @@
       }
     ]
   },
-
-  "IL": {
-    "name": "Illinois",
-    "events": [
-      {
-        "date": "2020-01-01",
-        "title": "AI Video Interview Act",
-        "status": "Enacted",
-        "summary": "Restricts AI analysis of job-interview videos, requiring consent and transparency.",
-        "links": []
-      },
-      {
-        "date": "2022-05-25",
-        "title": "Biometric Information Privacy Act Enforcement Expansion",
-        "status": "Proposed",
-        "summary": "Proposed expansion of AI/biometric privacy enforcement.",
-        "links": []
-      }
-    ]
-  },
     
 "CO": {
     "name": "Colorado",
