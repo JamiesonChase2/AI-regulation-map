@@ -259,35 +259,98 @@
     ]
   },
 
-  "NY": {
+"NY": {
     "name": "New York",
     "events": [
       {
-        "date": "2021-07-01",
-        "title": "Employee Monitoring Disclosure Law",
+        "date": "2021-12-11",
+        "title": "Automated Employment Decision Tools (Local Law 144)",
         "status": "Enacted",
-        "summary": "Requires employers to disclose electronic monitoring tools, including automated systems.",
-        "links": []
+        "summary": "Requires NYC employers to conduct bias audits on AI hiring tools and provide notice to candidates. Enforcement began July 2023.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=4344524&GUID=B0514A5D-9188-4395-99EE-975986E08C74"
+          }
+        ]
       },
       {
-        "date": "2023-02-20",
-        "title": "Automated Employment Decision Tool Restrictions",
-        "status": "Proposed",
-        "summary": "Proposal to regulate AI hiring tools and require bias auditing.",
-        "links": []
+        "date": "2023-10-25",
+        "title": "Non-Consensual Deepfake Pornography Ban (S 1042A)",
+        "status": "Enacted",
+        "summary": "Criminalizes the unlawful dissemination of AI-generated intimate images (deepfake pornography) without consent.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.nysenate.gov/legislation/bills/2023/S1042/amendment/A"
+          }
+        ]
+      },
+      {
+        "date": "2024-04-20",
+        "title": "Election Deepfake Restrictions (S 8631 / A 9430)",
+        "status": "Enacted",
+        "summary": "Requires political communications that use materially deceptive AI media to include clear disclosures. Part of the FY 2025 State Budget (El. Law 14-106).",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.nysenate.gov/legislation/bills/2023/S8631"
+          }
+        ]
+      },
+      {
+        "date": "2024-12-21",
+        "title": "LOADinG Act (S 7543A / A 9430B)",
+        "status": "Enacted",
+        "summary": "Regulates the use of automated decision-making systems by state agencies, requiring transparency and prohibiting systems that affect public benefits or civil rights without authorization.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.nysenate.gov/legislation/bills/2023/S7543/amendment/A"
+          }
+        ]
       }
     ]
   },
 
-  "FL": {
+"FL": {
     "name": "Florida",
     "events": [
       {
-        "date": "2023-03-15",
-        "title": "AI in Education Guidelines",
-        "status": "Proposed",
-        "summary": "Proposal to study use of AI tools in public schools and establish usage guidelines.",
-        "links": []
+        "date": "2024-04-26",
+        "title": "AI in Political Advertising (HB 919)",
+        "status": "Enacted",
+        "summary": "Requires political advertisements containing AI-generated content to include a clear disclaimer stating 'Created in whole or in part with the use of generative artificial intelligence (AI).' Effective July 1, 2024.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.flsenate.gov/Session/Bill/2024/919"
+          }
+        ]
+      },
+      {
+        "date": "2024-05-02",
+        "title": "Advanced Technology and AI Transparency (SB 1680)",
+        "status": "Enacted",
+        "summary": "Creates the Government Technology Modernization Council to study AI and establishes safety standards for AI platforms to protect minors and ensure transparency. Effective July 1, 2024.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.flsenate.gov/Session/Bill/2024/1680"
+          }
+        ]
+      },
+      {
+        "date": "2024-06-18",
+        "title": "Deepfake Pornography and Child Exploitation (SB 1792 / HB 3)",
+        "status": "Enacted",
+        "summary": "Criminalizes the creation and distribution of deepfake pornography, particularly targeting minors, and enhances penalties for possessing AI-generated child sexual abuse material. Effective July 1, 2024.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://www.flsenate.gov/Session/Bill/2024/1792"
+          }
+        ]
       }
     ]
   },
@@ -311,23 +374,45 @@
       }
     ]
   },
-
-  "CO": {
+    
+"CO": {
     "name": "Colorado",
     "events": [
       {
-        "date": "2021-07-07",
-        "title": "Privacy Act (CPA)",
+        "date": "2024-05-17",
+        "title": "Colorado Artificial Intelligence Act (SB 24-205)",
         "status": "Enacted",
-        "summary": "Includes provisions about automated profiling and data processing transparency.",
-        "links": []
+        "summary": "Comprehensive regulatory framework for high-risk AI systems, requiring developers and deployers to use reasonable care to avoid algorithmic discrimination. Implementation delayed to June 30, 2026 by SB 25B-004.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://leg.colorado.gov/bills/sb24-205"
+          }
+        ]
       },
       {
-        "date": "2023-06-06",
-        "title": "AI-Specific Amendments",
-        "status": "Proposed",
-        "summary": "Proposed amendments for explicit AI/ADS requirements.",
-        "links": []
+        "date": "2024-05-24",
+        "title": "Candidate Election Deepfake Disclosures (HB 24-1147)",
+        "status": "Enacted",
+        "summary": "Requires clear and conspicuous disclosures on campaign advertisements that use AI-generated content (deepfakes) to depict candidates.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://leg.colorado.gov/bills/hb24-1147"
+          }
+        ]
+      },
+      {
+        "date": "2024-06-06",
+        "title": "Artificial Intelligence & Biometric Technologies (HB 24-1468)",
+        "status": "Enacted",
+        "summary": "Establishes the Biometric Technology and Artificial Intelligence Policy Task Force to study and recommend policies on AI and biometric technologies.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://leg.colorado.gov/bills/hb24-1468"
+          }
+        ]
       }
     ]
   },
@@ -360,6 +445,47 @@
         "status": "Enacted",
         "summary": "Proposal to study use of AI tools in public schools and establish usage guidelines.",
         "links": []
+      }
+    ]
+  },
+    "AZ": {
+    "name": "Arizona",
+    "events": [
+      {
+        "date": "2024-05-21",
+        "title": "Digital Impersonation Prevention (HB 2394)",
+        "status": "Enacted",
+        "summary": "Allows individuals to sue for damages or injunctive relief if they are the target of a digital impersonation (deepfake) created without their consent.",
+        "links": [
+          {
+            "label": "Bill Info",
+            "url": "https://apps.azleg.gov/BillStatus/BillOverview/80254"
+          }
+        ]
+      },
+      {
+        "date": "2024-05-29",
+        "title": "Deepfake Political Ads Disclosure (SB 1359)",
+        "status": "Enacted",
+        "summary": "Requires political advertisements that use AI-generated deepfakes to depict a candidate to include a clear disclosure within 90 days of an election.",
+        "links": [
+          {
+            "label": "Bill Text",
+            "url": "https://www.azleg.gov/legtext/56leg/2r/bills/sb1359s.htm"
+          }
+        ]
+      },
+      {
+        "date": "2025-05-12",
+        "title": "Human Review in Health Insurance (HB 2175)",
+        "status": "Enacted",
+        "summary": "Mandates that medical directors must individually review medical necessity denials, preventing insurance companies from relying solely on AI algorithms for claim decisions.",
+        "links": [
+          {
+            "label": "Legislature Info",
+            "url": "https://www.azleg.gov/"
+          }
+        ]
       }
     ]
   }
