@@ -1,5 +1,3 @@
-[Screenshot-2025-12-03-at-6-53-05-PM.png](https://postimg.cc/hfvy6gZg)
-
 # AI Regulation Map & Scorecard
 
 A data visualization dashboard tracking the landscape of Artificial Intelligence regulation in the United States.
